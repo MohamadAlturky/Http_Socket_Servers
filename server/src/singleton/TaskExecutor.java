@@ -1,6 +1,6 @@
 package singleton;
 
-import thread_pooling_services.task.Task;
+import task.Task;
 
 import java.text.DecimalFormat;
 import java.util.Arrays;
@@ -12,7 +12,7 @@ public enum TaskExecutor {
     // Singleton
     INSTANCE;
 
-    public static final String TASKS_PACKAGE = "thread_pooling_services.task.";
+    public static final String TASKS_PACKAGE = "task.";
 
     public String run(String parameters) {
         String taskName, input = "";

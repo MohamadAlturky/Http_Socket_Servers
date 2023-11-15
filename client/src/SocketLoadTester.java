@@ -17,7 +17,7 @@ public class SocketLoadTester {
         int port = 8000;
         int threadCount = 6;
         int callCountPerThread = 25;
-        String requestBody = "TaskHash 45";
+        String requestBody = "TaskHash mohamad alturky is a good person";
         SocketLoadTester.switchCase(url, port, threadCount, callCountPerThread, requestBody);
 
     }

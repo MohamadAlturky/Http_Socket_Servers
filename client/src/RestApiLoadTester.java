@@ -11,7 +11,7 @@ import okhttp3.*;
 import stuff.Status;
 
 public class RestApiLoadTester {
-    public static void main(String[] args){
+    public static void main(String[] args) {
 
         String url = "http://localhost:8000";
         String headers = "content-type: text/plain\n" +
@@ -19,57 +19,60 @@ public class RestApiLoadTester {
         int threadCount = 1;
         int callCountPerThread = 10;
 
-        String requestBody = "TaskHash mohamad";
-        RestApiLoadTester.switchCase(url, headers, threadCount,callCountPerThread,requestBody);
+        String requestBody = "TaskHash mohamad alturky is a good person";
+        RestApiLoadTester.switchCase(url, headers, threadCount, callCountPerThread, requestBody);
     }
 
-    public static void switchCase(String url, String headers, int threadCount, int callCountPerThread,String requestBody) {
+    public static void switchCase(String url, String headers, int threadCount, int callCountPerThread,
+            String requestBody) {
         Scanner scanner = new Scanner(System.in);
         boolean keepRunning = true;
         System.out.println("To run the test Press 1");
         System.out.println("To print the results of the tests Press 2");
         System.out.println("To close the application Press 0");
-        while (keepRunning){
+        while (keepRunning) {
             int code = scanner.nextInt();
-            if(code == 0){
+            if (code == 0) {
                 keepRunning = false;
             }
-            if (code == 1){
-                RestApiLoadTester.runLoadTest(url, headers, threadCount,callCountPerThread,requestBody);
+            if (code == 1) {
+                RestApiLoadTester.runLoadTest(url, headers, threadCount, callCountPerThread, requestBody);
             }
-            if(code == 2){
+            if (code == 2) {
                 double allTime = 0;
                 double minTime = 100000000;
                 double maxTime = 0;
                 int numberOfSuccessRequests = 0;
                 int numberOfFailureRequests = 0;
-                for (ApiResponseReport report :RestApiLoadTester.reports){
+                for (ApiResponseReport report : RestApiLoadTester.reports) {
                     allTime += report.executionTime;
-                    if(report.executionTime > maxTime){
+                    if (report.executionTime > maxTime) {
                         maxTime = report.executionTime;
                     }
-                    if (report.executionTime < minTime){
+                    if (report.executionTime < minTime) {
                         minTime = report.executionTime;
                     }
-                    if(report.status == Status.Success){
-                        numberOfSuccessRequests ++;
-                    }
-                    else{
-                        numberOfFailureRequests ++;
+                    if (report.status == Status.Success) {
+                        numberOfSuccessRequests++;
+                    } else {
+                        numberOfFailureRequests++;
                     }
                 }
-                double meanTime = allTime/reports.size();
-                System.out.println("mean time to response for all requests = "+ meanTime);
-                System.out.println("min time to response for all requests = "+ minTime);
-                System.out.println("max time to response for all requests = "+ maxTime);
-                System.out.println("number of failure response for all requests = "+ numberOfFailureRequests);
-                System.out.println("number of success response for all requests = "+ numberOfSuccessRequests);
+                double meanTime = allTime / reports.size();
+                System.out.println("mean time to response for all requests = " + meanTime);
+                System.out.println("min time to response for all requests = " + minTime);
+                System.out.println("max time to response for all requests = " + maxTime);
+                System.out.println("number of failure response for all requests = " + numberOfFailureRequests);
+                System.out.println("number of success response for all requests = " + numberOfSuccessRequests);
 
             }
         }
     }
+
     private static List<ApiResponseReport> reports = new ArrayList<>();
-    public static void runLoadTest(String url, String headers, int threadCount, int callCountPerThread,String requestBody) {
+
+    public static void runLoadTest(String url, String headers, int threadCount, int callCountPerThread,
+            String requestBody) {
         OkHttpClient httpClient = new OkHttpClient();
         MediaType mediaType = MediaType.parse("text/plain");
 
@@ -99,13 +102,13 @@ public class RestApiLoadTester {
                         Response response = httpClient.newCall(request).execute();
                         response.body().close();
                         long end = System.currentTimeMillis();
-                        time = (end - start)/1000.0;
+                        time = (end - start) / 1000.0;
                         System.out.println("OK");
-                        reports.add(new ApiResponseReport(Status.Success,time));
+                        reports.add(new ApiResponseReport(Status.Success, time));
                     } catch (IOException e) {
                         long end = System.currentTimeMillis();
-                        time = (end - start)/1000.0;
-                        reports.add(new ApiResponseReport(Status.Failure,time));
+                        time = (end - start) / 1000.0;
+                        reports.add(new ApiResponseReport(Status.Failure, time));
                         System.out.println(e.getStackTrace());
                         e.printStackTrace();
                     }
